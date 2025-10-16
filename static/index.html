@@ -95,9 +95,14 @@
 			grid-row: 3 / 4;
 		}
 
-		#btn-hand {
+		#btn-hand-open {
 			grid-column: 4 / 5;
-			grid-row: 2 / 3;
+			grid-row: 1 / 2;
+		}
+
+		#btn-hand-close {
+			grid-column: 4 / 5;
+			grid-row: 3 / 4;
 		}
 
 		@media (max-width: 576px) {
@@ -139,8 +144,12 @@
 					<i class="las la-arrow-down"></i>
 				</button>
 
-				<button id="btn-hand">
+				<button id="btn-hand-open">
 					<i class="las la-hand-paper"></i>
+				</button>
+
+				<button id="btn-hand-close">
+					<i class="las la-hand-rock"></i>
 				</button>
 			</section>
 		</section>
@@ -157,12 +166,12 @@
 
 			// Add button events
 			for (let button of buttons) {
-				button.addEventListener("mousedown", event => {
+				button.addEventListener("touchstart", event => {
 					socket.send(button.getAttribute("id") + " pressed");
 					event.target.classList.add("pressed");
 				});
 
-				button.addEventListener("mouseup", event => {
+				button.addEventListener("touchend", event => {
 					socket.send(button.getAttribute("id"));
 					event.target.classList.remove("pressed");
 				});
