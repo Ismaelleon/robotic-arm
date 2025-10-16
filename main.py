@@ -28,7 +28,7 @@ url = ""
 rotation_servo.move(45)
 shoulder_servo.move(45)
 elbow_servo.move(45)
-hand_servo.move(0)
+hand_servo.move(180)
 
 
 def connect_wifi():
@@ -109,9 +109,9 @@ def movement():
     print(f"Hand Servo: {hand_servo.current_angle}°")
 
     # Rotation
-    if buttons["right"] == True and rotation_servo.current_angle < 170:
+    if buttons["right"] == True and rotation_servo.current_angle > 10:
         rotation_servo.move(rotation_servo.current_angle - vel)
-    elif buttons["left"] == True and rotation_servo.current_angle > 10:
+    elif buttons["left"] == True and rotation_servo.current_angle < 170:
         rotation_servo.move(rotation_servo.current_angle + vel)
 
     # Shoulder
@@ -127,9 +127,9 @@ def movement():
         elbow_servo.move(elbow_servo.current_angle - vel)
 
     # Hand
-    if buttons["hand-open"] == True and hand_servo.current_angle < 90:
+    if buttons["hand-open"] == True and hand_servo.current_angle < 180:
         hand_servo.move(hand_servo.current_angle + vel)
-    elif buttons["hand-close"] == True and hand_servo.current_angle > 10:
+    elif buttons["hand-close"] == True and hand_servo.current_angle > 135:
         hand_servo.move(hand_servo.current_angle - vel)
 
 
