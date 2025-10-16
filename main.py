@@ -110,9 +110,9 @@ def movement():
 
     # Rotation
     if buttons["right"] == True and rotation_servo.current_angle < 170:
-        rotation_servo.move(rotation_servo.current_angle + vel)
-    elif buttons["left"] == True and rotation_servo.current_angle > 10:
         rotation_servo.move(rotation_servo.current_angle - vel)
+    elif buttons["left"] == True and rotation_servo.current_angle > 10:
+        rotation_servo.move(rotation_servo.current_angle + vel)
 
     # Shoulder
     if buttons["up"] == True and shoulder_servo.current_angle < 170:
