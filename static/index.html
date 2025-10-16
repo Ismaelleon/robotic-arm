@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+	<title>Brazo Robótico</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/line-awesome/1.3.0/line-awesome/css/line-awesome.min.css" integrity="sha512-vebUliqxrVkBy3gucMhClmyQP9On/HAWQdKDXRaAlb/FKuTbxkjPKUyqVOxAcGwFDka79eTF+YXwfke1h3/wfg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		html {
+			font-size: 16px;
+			font-family: "Roboto Condensed";
+		}
+
+		main {
+			width: 100%;
+			height: 100dvh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			flex-direction: column;
+			padding: 1rem;
+		}
+
+		main > h1 {
+			font-size: 2rem;
+			margin-bottom: 2rem;
+		}
+
+		.container {
+			width: 100%;
+			max-width: 768px;
+			display: grid;
+			flex-direction: row;
+			grid-template-columns: 50% 50%;
+		}
+
+		.container > section {
+			display: grid;
+			justify-content: center;
+			align-items: center;	
+			grid-template-columns: repeat(5, 1fr);
+			grid-template-rows: repeat(3, 1fr);
+		}
+
+		button {
+			font-size: 1.25rem;
+			border: none;
+			background-color: #000;
+			color: #fff;
+			padding: .25rem;
+			border-radius: .5rem;
+			aspect-ratio: 1 / 1;
+		}
+
+		button.pressed {
+			background-color: #333;
+		}
+
+		#btn-up {
+			grid-column: 3 / 4;
+			grid-row: 1 / 2;
+		}
+
+		#btn-right {
+			grid-column: 4 / 5;
+			grid-row: 2 / 3;
+		}
+
+		#btn-down {
+			grid-column: 3 / 4;
+			grid-row: 3 / 4;
+		}
+
+		#btn-left {
+			grid-column: 2 / 3;
+			grid-row: 2 / 3;
+		}
+
+		#btn-elbow-up {
+			grid-column: 2 / 3;
+			grid-row: 1 / 2;
+		}
+		
+		#btn-elbow-down {
+			grid-column: 2 / 3;
+			grid-row: 3 / 4;
+		}
+
+		#btn-hand {
+			grid-column: 4 / 5;
+			grid-row: 2 / 3;
+		}
+
+		@media (max-width: 576px) {
+			.container {
+				grid-gap: 2rem;
+				grid-template-columns: 1fr;
+				grid-template-rows: 1fr 1fr;
+			}
+		}
+	</style>
+</head>
+<body>
+	<main>
+		<h1>Brazo Robótico</h1>	
+		<section class="container">
+			<section class="left-buttons">
+				<button id="btn-up">
+					<i class="las la-arrow-up"></i>
+				</button>
+
+				<button id="btn-right">
+					<i class="las la-arrow-right"></i>
+				</button>
+
+				<button id="btn-down">
+					<i class="las la-arrow-down"></i>
+				</button>
+
+				<button id="btn-left">
+					<i class="las la-arrow-left"></i>
+				</button>
+			</section>
+			<section class="right-buttons">
+				<button id="btn-elbow-up">
+					<i class="las la-arrow-up"></i>
+				</button>
+
+				<button id="btn-elbow-down">
+					<i class="las la-arrow-down"></i>
+				</button>
+
+				<button id="btn-hand">
+					<i class="las la-hand-paper"></i>
+				</button>
+			</section>
+		</section>
+	</main>
+	<script>
+		// Get all button elements
+		const buttons = document.querySelectorAll("button");
+
+		// Try to connect to websocket server
+		const socket = new WebSocket(`ws://${window.location.host}/ws`);
+		
+		socket.addEventListener("open", event => {
+			socket.send("Client connected!");
+
+			// Add button events
+			for (let button of buttons) {
+				button.addEventListener("mousedown", event => {
+					socket.send(button.getAttribute("id") + " pressed");
+					event.target.classList.add("pressed");
+				});
+
+				button.addEventListener("mouseup", event => {
+					socket.send(button.getAttribute("id"));
+					event.target.classList.remove("pressed");
+				});
+			}
+		});
+
+		socket.addEventListener("message", event => {
+			console.log(event.data);
+		});
+	</script>
+</body>
+</html>
